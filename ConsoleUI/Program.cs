@@ -36,7 +36,8 @@ namespace ConsoleUI
             //GetEvens(numberList); 
             //ListPeopleName(peopleList); 
             //GetMaxNumber(numberList); 
-            OrderByTest(peopleList); 
+            //OrderByTest(peopleList); 
+            GroupByLastName(peopleList); 
         }
 
         private static void ListPeopleName(List<Person> personList)
@@ -74,6 +75,28 @@ namespace ConsoleUI
             evenNumbers = numberList.Where(number => number % 2 == 0).ToList(); 
 
             evenNumbers.Print(); 
+        }
+
+        public static void GroupByLastName(List<Person> personList)
+        {
+            //Key: Smith 
+            //      [Aaron Smith, 
+            //      Roger Smith] 
+
+            //var lastNameGroups = personList.GroupBy(person => person.LastName); // displays everyone by last name
+            var lastNameGroups = personList.GroupBy(person => person.LastName).OrderBy(p => p.Key).Take(2); // displays the top 2 last names 
+
+            foreach (IGrouping<string, Person> lastNameGroup in lastNameGroups)
+            {
+                Console.WriteLine($"Lastname: {lastNameGroup.Key} ({lastNameGroup.Count()})");
+
+                foreach (Person person in lastNameGroup)
+                {
+                    Console.WriteLine($"\t{person.FullName}"); 
+                }
+
+                Console.WriteLine(); 
+            }
         }
     }
 }
